@@ -1,5 +1,6 @@
 import mapboxgl from 'mapbox-gl';
 import { useEffect, useRef, useState } from 'react';
+import RulerControl from 'mapbox-gl-controls/lib/ruler';
 
 import '../css/Map.css';
 
@@ -17,16 +18,29 @@ function Map() {
       center: [127.06243582034075, 37.49804469532547],
       zoom: 12.7,
       attributionControl: false,
-    }).addControl(
+    });
+
+    map.addControl(
       new mapboxgl.AttributionControl({
         compact: true,
       })
     );
+
+    map.addControl(new RulerControl(), 'top-right');
+    map.on('ruler.on', () => console.log('ruler: on'));
+    map.on('ruler.off', () => console.log('ruler: off'));
+
     map.on('load', () => {
       map.addSource('buildings', {
         type: 'geojson',
         data:
           'https://raw.githubusercontent.com/Aete/transport-accessibility/master/src/data/gangnamGu-building-residential.geojson',
+      });
+
+      map.addSource('busStops', {
+        type: 'geojson',
+        data:
+          'https://raw.githubusercontent.com/Aete/transport-accessibility/master/src/data/seoulBusStop.geojson',
       });
 
       map.addLayer({
@@ -35,13 +49,31 @@ function Map() {
         source: 'buildings',
         layout: {},
         paint: {
-          'fill-color': '#f44336',
-          'fill-opacity': 0.7,
+          'fill-color': [
+            'interpolate',
+            ['linear'],
+            ['get', 'count_bus_stop'],
+            0,
+            '#F44336',
+            11,
+            '#FFF082',
+            22,
+            '#4CAF50',
+            33,
+            '#1B5E20',
+          ],
         },
       });
 
-      "paint": {
-        
+      map.addLayer({
+        id: 'busStops',
+        source: 'busStops',
+        type: 'circle',
+        paint: {
+          'circle-color': '#969696',
+          'circle-radius': 3,
+        },
+      });
 
       setMap(map);
     });
