@@ -11,11 +11,11 @@ mapboxgl.accessToken =
 function Map() {
   const mapContainerRef = useRef(null);
   const [map, setMap] = useState(null);
-  const colorScale = d3.schemeRdYlGn[6];
+  const colorScale = d3.schemeRdYlBu[11];
 
   const colors = colorScale
     .map((color, index) => {
-      return [index * 3, color];
+      return [index, color];
     })
     .flat(1);
 
@@ -63,7 +63,7 @@ function Map() {
             ['get', 'total_score'],
             ...colors,
           ],
-          'fill-opacity': 0.8,
+          'fill-opacity': 0.7,
         },
       });
       setMap(map);
