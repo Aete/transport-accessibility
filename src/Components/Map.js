@@ -1,6 +1,7 @@
 import mapboxgl from 'mapbox-gl';
 import { useEffect, useRef, useState } from 'react';
 import RulerControl from 'mapbox-gl-controls/lib/ruler';
+import * as d3 from 'd3';
 
 import '../css/Map.css';
 
@@ -10,6 +11,13 @@ mapboxgl.accessToken =
 function Map() {
   const mapContainerRef = useRef(null);
   const [map, setMap] = useState(null);
+  const colorScale = d3.schemeRdYlGn[6];
+
+  const colors = colorScale
+    .map((color, index) => {
+      return [index * 3, color];
+    })
+    .flat(1);
 
   useEffect(() => {
     const map = new mapboxgl.Map({
@@ -31,10 +39,10 @@ function Map() {
     map.on('ruler.off', () => console.log('ruler: off'));
 
     map.on('load', () => {
-      map.addSource('buildings', {
+      map.addSource('hexagons', {
         type: 'geojson',
         data:
-          'https://raw.githubusercontent.com/Aete/transport-accessibility/master/src/data/gangnamGu-building-residential.geojson',
+          'https://raw.githubusercontent.com/Aete/transport-accessibility/master/src/data/hexagon_with_data.geojson',
       });
 
       map.addSource('busStops', {
@@ -44,37 +52,20 @@ function Map() {
       });
 
       map.addLayer({
-        id: 'buildings',
+        id: 'hexagons',
         type: 'fill',
-        source: 'buildings',
+        source: 'hexagons',
         layout: {},
         paint: {
           'fill-color': [
             'interpolate',
             ['linear'],
-            ['get', 'count_bus_stop'],
-            0,
-            '#F44336',
-            11,
-            '#FFF082',
-            22,
-            '#4CAF50',
-            33,
-            '#1B5E20',
+            ['get', 'total_score'],
+            ...colors,
           ],
+          'fill-opacity': 0.8,
         },
       });
-
-      map.addLayer({
-        id: 'busStops',
-        source: 'busStops',
-        type: 'circle',
-        paint: {
-          'circle-color': '#969696',
-          'circle-radius': 3,
-        },
-      });
-
       setMap(map);
     });
 
