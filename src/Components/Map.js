@@ -63,7 +63,7 @@ function Map() {
             ['get', 'total_score'],
             ...colors,
           ],
-          'fill-opacity': 0.7,
+          'fill-opacity': 0.5,
         },
       });
       setMap(map);
