@@ -42,7 +42,7 @@ function Map() {
       map.addSource('hexagons', {
         type: 'geojson',
         data:
-          'https://raw.githubusercontent.com/Aete/transport-accessibility/master/src/data/hexagon_with_data.geojson',
+          'https://raw.githubusercontent.com/Aete/transport-accessibility/master/src/data/hexagon_res_9/hexagon_with_data.geojson',
       });
 
       map.addSource('busStops', {
@@ -63,7 +63,7 @@ function Map() {
             ['get', 'total_score'],
             ...colors,
           ],
-          'fill-opacity': 0.5,
+          'fill-opacity': 0.7,
         },
       });
       setMap(map);
