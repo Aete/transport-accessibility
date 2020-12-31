@@ -1,6 +1,5 @@
 import mapboxgl from 'mapbox-gl';
 import { useEffect, useRef, useState } from 'react';
-import RulerControl from 'mapbox-gl-controls/lib/ruler';
 import * as d3 from 'd3';
 
 import '../css/Map.css';
@@ -34,15 +33,11 @@ function Map() {
       })
     );
 
-    map.addControl(new RulerControl(), 'top-right');
-    map.on('ruler.on', () => console.log('ruler: on'));
-    map.on('ruler.off', () => console.log('ruler: off'));
-
     map.on('load', () => {
       map.addSource('hexagons', {
         type: 'geojson',
         data:
-          'https://raw.githubusercontent.com/Aete/transport-accessibility/master/src/data/hexagon_res_9_400m_count/hexagon_res_9_400m_count.geojson',
+          'https://raw.githubusercontent.com/Aete/transport-accessibility/master/src/data/hexagon_res_10_400m_count/hexagon_with_data.geojson',
       });
 
       map.addSource('busStops', {
