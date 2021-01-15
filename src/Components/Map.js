@@ -3,22 +3,23 @@ import { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 
 import '../css/Map.css';
+import Spider from '../D3Chart/Spider';
 
 mapboxgl.accessToken =
   'pk.eyJ1Ijoic2doYW4iLCJhIjoiY2szamxqbjZnMGtmbTNjbXZzamh4cng3dSJ9.GGv4GVVoZ811d6PKi54PrA';
 
 function Map() {
   const mapContainerRef = useRef(null);
-  const [map, setMap] = useState(null);
-  const colorScale = d3.schemeRdYlBu[11];
-
-  const colors = colorScale
-    .map((color, index) => {
-      return [index, color];
-    })
-    .flat(1);
+  const [, setMap] = useState(null);
 
   useEffect(() => {
+    const colorScale = d3.schemeRdYlGn[11];
+    const colors = colorScale
+      .map((color, index) => {
+        return [index, color];
+      })
+      .flat(1);
+
     const map = new mapboxgl.Map({
       container: mapContainerRef.current,
       style: 'mapbox://styles/sghan/ck1ljdcmy16fc1cpg0f4qh3wu',
@@ -40,12 +41,6 @@ function Map() {
           'https://raw.githubusercontent.com/Aete/transport-accessibility/master/src/data/hexagon_res_10_400m_count/hexagon_with_data.geojson',
       });
 
-      map.addSource('busStops', {
-        type: 'geojson',
-        data:
-          'https://raw.githubusercontent.com/Aete/transport-accessibility/master/src/data/seoulBusStop.geojson',
-      });
-
       map.addLayer({
         id: 'hexagons',
         type: 'fill',
@@ -62,6 +57,27 @@ function Map() {
         },
       });
       setMap(map);
+    });
+
+    map.on('click', 'hexagons', function (e) {
+      const {
+        x,
+        y,
+        score_bus,
+        score_subway,
+        score_bike,
+      } = e.features[0].properties;
+      d3.select('.spiderChart').remove();
+      const marker = new mapboxgl.Popup()
+        .setLngLat([x, y])
+        .setHTML('<div class="spiderChart"></div>')
+        .addTo(map);
+
+      Spider(d3.select('.spiderChart'), {
+        score_bus,
+        score_subway,
+        score_bike,
+      });
     });
 
     return () => map.remove();

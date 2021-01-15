@@ -1,10 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
 import '../css/chart.css';
+import SpiderChart from './SpiderChart';
 
 function Charts() {
   return (
     <div className="charts">
-      <div className="charts__placeholder">placeholder for charts</div>
+      <SpiderChart />
     </div>
   );
 }
