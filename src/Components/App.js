@@ -1,13 +1,12 @@
 import Map from './Map';
-import Charts from './Chart';
 
 import '../css/App.css';
 
 function App() {
   return (
-    <div className="dashboard">
+    <main className="dashboard">
       <Map />
-    </div>
+    </main>
   );
 }
 

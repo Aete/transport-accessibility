@@ -66,11 +66,21 @@ function Map() {
         score_bus,
         score_subway,
         score_bike,
+        total_score,
       } = e.features[0].properties;
+
       d3.select('.spiderChart').remove();
+
+      const text = textGenerate(
+        total_score,
+        score_bus,
+        score_subway,
+        score_bike
+      );
+
       const marker = new mapboxgl.Popup()
         .setLngLat([x, y])
-        .setHTML('<div class="spiderChart"></div>')
+        .setHTML(`${text} <div class="spiderChart"></div>`)
         .addTo(map);
 
       Spider(d3.select('.spiderChart'), {
@@ -91,3 +101,18 @@ function Map() {
 }
 
 export default Map;
+
+const textGenerate = (total_score, score_bus, score_subway, score_bike) => {
+  return `
+    <section class='textInfo'>
+    <h1>Accessibility score</h1>
+    <ul>
+      <li>total score: ${Math.round(total_score * 100) / 100} / 15</li>
+      <li>subway: ${Math.round(score_subway * 100) / 100} / 5</li>
+      <li>bus: ${Math.round(score_bus * 100) / 100} / 5</li>
+      <li>bike: ${Math.round(score_bike * 100) / 100} / 5</li>
+      <li><a>Methodolgy (click)</a></li>
+    </ul>
+    </section>
+  `;
+};

@@ -1,6 +1,8 @@
 import * as d3 from 'd3';
-export default function Spider(element, data) {
-  console.log(data);
+export default function Spider(
+  element,
+  { score_bus, score_bike, score_subway }
+) {
   const margin = {
     top: 25,
     left: 25,
@@ -31,6 +33,7 @@ export default function Spider(element, data) {
     .data(score)
     .enter()
     .append('circle')
+    .attr('class', 'axis-sub')
     .attr('cx', width / 2)
     .attr('cy', height / 2)
     .attr('fill', 'none')
@@ -65,27 +68,42 @@ export default function Spider(element, data) {
     .data([1, 5, 9])
     .enter()
     .append('line')
+    .attr('class', 'axis-main')
     .attr('x1', 0)
     .attr('y1', 0)
     .attr('x2', (d) => Math.cos((Math.PI * d) / 6) * rScale(5))
     .attr('y2', (d) => Math.sin((Math.PI * d) / 6) * rScale(5))
     .attr('stroke', '#636363');
 
-  const busCoord = `${Math.cos(Math.PI / 6) * rScale(+data.score_bus)}, ${
-    Math.sin(Math.PI / 6) * rScale(+data.score_bus)
+  const busCoord = `${Math.cos(Math.PI / 6) * rScale(+score_bus)}, ${
+    Math.sin(Math.PI / 6) * rScale(+score_bus)
   }`;
-  const subwayCoord = `0,${-rScale(+data.score_subway)}`;
-  const bikeCoord = `${
-    Math.cos((5 * Math.PI) / 6) * rScale(+data.score_bike)
-  }, ${Math.sin((5 * Math.PI) / 6) * rScale(+data.score_bike)}`;
+  const subwayCoord = `0,${-rScale(+score_subway)}`;
+  const bikeCoord = `${Math.cos((5 * Math.PI) / 6) * rScale(+score_bike)}, ${
+    Math.sin((5 * Math.PI) / 6) * rScale(+score_bike)
+  }`;
 
   polygon
     .append('polygon')
-    .attr('points', `${busCoord} ${subwayCoord} ${bikeCoord}`)
     .attr('fill', '#2196F3')
     .attr('fill-opacity', 0.3)
     .attr('stroke', '#2963FF')
-    .attr('stroke-width', 2);
+    .attr('stroke-width', 2)
+    .attr('points', '0,0 0,0 0,0')
+    .transition()
+    .duration(300)
+    .attr('points', `${busCoord} ${subwayCoord} ${bikeCoord}`);
+
+  polygon
+    .selectAll('.point')
+    .data([score_bus, score_bike, score_subway])
+    .enter()
+    .append('circle')
+    .attr('class', 'point')
+    .attr('cx', (d, i) => Math.cos((Math.PI * (i * 4 + 1)) / 6) * rScale(d))
+    .attr('cy', (d, i) => Math.sin((Math.PI * (i * 4 + 1)) / 6) * rScale(d))
+    .attr('r', '3')
+    .attr('fill', '#2196F3');
 
   polygon
     .append('text')
