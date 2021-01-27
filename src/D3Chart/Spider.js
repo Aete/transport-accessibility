@@ -12,10 +12,18 @@ export default function Spider(
 
   const width = 240;
   const height = 240;
+  const viewbox = [
+    0,
+    0,
+    width + margin.left + margin.right,
+    height + margin.top + margin.bottom,
+  ];
   const svg = element
     .append('svg')
-    .attr('width', width + margin.left + margin.right)
-    .attr('height', height + margin.top + margin.bottom);
+    .attr('viewBox', viewbox)
+    .attr('preserveAspectRatio', 'xMinYMid meet');
+
+  const newFontSize = 12 * (290 / parseInt(d3.select('svg').style('width')));
 
   const container = svg
     .append('g')
@@ -112,7 +120,7 @@ export default function Spider(
     .attr('x', Math.cos(Math.PI / 6) * rScale(6))
     .attr('y', Math.sin(Math.PI / 6) * rScale(6))
     .attr('fill', '#FFFFFF')
-    .style('font-size', '12px');
+    .style('font-size', `${newFontSize}px`);
 
   polygon
     .append('text')
@@ -121,7 +129,7 @@ export default function Spider(
     .attr('x', Math.cos((Math.PI * 5) / 6) * rScale(6))
     .attr('y', Math.sin((Math.PI * 5) / 6) * rScale(6))
     .attr('fill', '#FFFFFF')
-    .style('font-size', '12px');
+    .style('font-size', `${newFontSize}px`);
 
   polygon
     .append('text')
@@ -130,5 +138,5 @@ export default function Spider(
     .attr('x', Math.cos((Math.PI * 9) / 6) * rScale(6))
     .attr('y', Math.sin((Math.PI * 9) / 6) * rScale(6) + 12)
     .attr('fill', '#FFFFFF')
-    .style('font-size', '12px');
+    .style('font-size', `${newFontSize}px`);
 }
