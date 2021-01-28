@@ -1,5 +1,6 @@
 import mapboxgl from 'mapbox-gl';
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import ReactDOM from 'react-dom';
 import * as d3 from 'd3';
 
 import '../css/Map.css';
@@ -8,7 +9,7 @@ import Spider from '../D3Chart/Spider';
 mapboxgl.accessToken =
   'pk.eyJ1Ijoic2doYW4iLCJhIjoiY2szamxqbjZnMGtmbTNjbXZzamh4cng3dSJ9.GGv4GVVoZ811d6PKi54PrA';
 
-function Map() {
+function Map({ handleModal }) {
   const mapContainerRef = useRef(null);
   const [, setMap] = useState(null);
 
@@ -70,18 +71,25 @@ function Map() {
       } = e.features[0].properties;
 
       d3.select('.spiderChart').remove();
-
-      const text = textGenerate(
-        total_score,
-        score_bus,
-        score_subway,
-        score_bike
-      );
+      d3.select('.description').remove();
 
       const marker = new mapboxgl.Popup()
         .setLngLat([x, y])
-        .setHTML(`${text} <div class="spiderChart"></div>`)
+        .setHTML(
+          `<div class="description"></div> <div class="spiderChart"></div>`
+        )
         .addTo(map);
+
+      ReactDOM.render(
+        <Description
+          total_score={total_score}
+          score_bus={score_bus}
+          score_subway={score_subway}
+          score_bike={score_bike}
+          handleModal={handleModal}
+        />,
+        document.querySelector('.description')
+      );
 
       Spider(d3.select('.spiderChart'), {
         score_bus,
@@ -102,17 +110,27 @@ function Map() {
 
 export default Map;
 
-const textGenerate = (total_score, score_bus, score_subway, score_bike) => {
-  return `
-    <section class='textInfo'>
-    <h1>Accessibility score</h1>
-    <ul>
-      <li>total score: ${Math.round(total_score * 100) / 100} / 15</li>
-      <li>subway: ${Math.round(score_subway * 100) / 100} / 5</li>
-      <li>bus: ${Math.round(score_bus * 100) / 100} / 5</li>
-      <li>bike: ${Math.round(score_bike * 100) / 100} / 5</li>
-      <li><a>Methodolgy (click)</a></li>
-    </ul>
+function Description({
+  total_score,
+  score_bus,
+  score_subway,
+  score_bike,
+  handleModal,
+}) {
+  return (
+    <section className="textInfo">
+      <h1>Accessibility score</h1>
+      <ul>
+        <li>total score: {Math.round(total_score * 100) / 100} / 15</li>
+        <li>subway: {Math.round(score_subway * 100) / 100} / 5</li>
+        <li>bus: {Math.round(score_bus * 100) / 100} / 5</li>
+        <li>bike: {Math.round(score_bike * 100) / 100} / 5</li>
+        <li>
+          <span onTouchStart={handleModal} onClick={handleModal}>
+            Methodolgy (click)
+          </span>
+        </li>
+      </ul>
     </section>
-  `;
-};
+  );
+}
