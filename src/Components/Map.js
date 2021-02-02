@@ -69,7 +69,7 @@ function Map({ handleModal }) {
         score_bike,
         total_score,
       } = e.features[0].properties;
-
+      console.log(e.features[0].properties);
       d3.select('.spiderChart').remove();
       d3.select('.description').remove();
 
@@ -99,7 +99,7 @@ function Map({ handleModal }) {
     });
 
     return () => map.remove();
-  }, []);
+  }, [handleModal]);
 
   return (
     <div className="map">
@@ -126,8 +126,12 @@ function Description({
         <li>bus: {Math.round(score_bus * 100) / 100} / 5</li>
         <li>bike: {Math.round(score_bike * 100) / 100} / 5</li>
         <li>
-          <span onTouchStart={handleModal} onClick={handleModal}>
-            Methodolgy (click)
+          <span
+            className="aboutBtn"
+            onTouchStart={handleModal}
+            onClick={handleModal}
+          >
+            About the project (click)
           </span>
         </li>
       </ul>

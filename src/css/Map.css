@@ -73,9 +73,10 @@
   font-size: 12px;
 }
 
-.mapboxgl-popup-content .textInfo ul li a {
+.mapboxgl-popup-content .textInfo ul li span {
   color: #969696;
   cursor: pointer;
+  text-decoration: underline;
 }
 
 @media screen and (min-width: 481px) and (max-width: 780px) {
