@@ -5,7 +5,6 @@ import Spider from '../D3Chart/Spider';
 import '../css/chart.css';
 
 export default function Chart({ scores }) {
-  console.log('!');
   const { score_bus, score_bike, score_subway } = scores;
   const [chart, setChart] = useState(null);
   const container = useRef();
@@ -21,7 +20,7 @@ export default function Chart({ scores }) {
       );
     }
     return setChart(null);
-  }, [chart]);
+  }, [chart, score_bus, score_bike, score_subway]);
 
   return (
     <div className="chart">

@@ -5,7 +5,6 @@ import * as d3 from 'd3';
 
 import '../css/Map.css';
 
-import Spider from '../D3Chart/Spider';
 import Chart from './Chart';
 
 mapboxgl.accessToken =
@@ -102,12 +101,6 @@ function Map({ handleModal }) {
         .setLngLat([x, y])
         .setDOMContent(popup)
         .addTo(map);
-
-      // Spider(d3.select('.chart'), {
-      //   score_bus,
-      //   score_subway,
-      //   score_bike,
-      // });
     });
     return () => map.remove();
   }, [handleModal]);
