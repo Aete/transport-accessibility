@@ -18,12 +18,13 @@ export default function Spider(
     width + margin.left + margin.right,
     height + margin.top + margin.bottom,
   ];
+
   const svg = element
     .append('svg')
     .attr('viewBox', viewbox)
     .attr('preserveAspectRatio', 'xMinYMid meet');
 
-  const newFontSize = 12 * (290 / parseInt(d3.select('svg').style('width')));
+  const newFontSize = 12;
 
   const container = svg
     .append('g')

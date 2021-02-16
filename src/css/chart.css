@@ -1,15 +1,5 @@
-.charts {
-  width: 25%;
-  height: 100%;
-  padding: 10px 10px 10px 0;
-}
-
-.charts__placeholder {
+.chart {
   width: 100%;
   height: 100%;
-  background-color: #424242;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #ffffff;
+  position: relative;
 }

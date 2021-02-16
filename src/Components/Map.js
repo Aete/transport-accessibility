@@ -4,7 +4,9 @@ import ReactDOM from 'react-dom';
 import * as d3 from 'd3';
 
 import '../css/Map.css';
+
 import Spider from '../D3Chart/Spider';
+import Chart from './Chart';
 
 mapboxgl.accessToken =
   'pk.eyJ1Ijoic2doYW4iLCJhIjoiY2szamxqbjZnMGtmbTNjbXZzamh4cng3dSJ9.GGv4GVVoZ811d6PKi54PrA';
@@ -20,7 +22,6 @@ function Map({ handleModal }) {
         return [index, color];
       })
       .flat(1);
-
     const map = new mapboxgl.Map({
       container: mapContainerRef.current,
       style: 'mapbox://styles/sghan/ck1ljdcmy16fc1cpg0f4qh3wu',
@@ -70,15 +71,16 @@ function Map({ handleModal }) {
         total_score,
       } = e.features[0].properties;
       console.log(e.features[0].properties);
-      d3.select('.spiderChart').remove();
-      d3.select('.description').remove();
 
-      const marker = new mapboxgl.Popup()
-        .setLngLat([x, y])
-        .setHTML(
-          `<div class="description"></div> <div class="spiderChart"></div>`
-        )
-        .addTo(map);
+      const description = document.createElement('div');
+      description.className = 'description';
+
+      const charts = document.createElement('div');
+      charts.className = 'charts';
+
+      const popup = document.createElement('div');
+      popup.appendChild(description);
+      popup.appendChild(charts);
 
       ReactDOM.render(
         <Description
@@ -88,16 +90,25 @@ function Map({ handleModal }) {
           score_bike={score_bike}
           handleModal={handleModal}
         />,
-        document.querySelector('.description')
+        description
       );
 
-      Spider(d3.select('.spiderChart'), {
-        score_bus,
-        score_subway,
-        score_bike,
-      });
-    });
+      ReactDOM.render(
+        <Chart scores={{ score_bus, score_subway, score_bike }} />,
+        charts
+      );
 
+      const marker = new mapboxgl.Popup()
+        .setLngLat([x, y])
+        .setDOMContent(popup)
+        .addTo(map);
+
+      // Spider(d3.select('.chart'), {
+      //   score_bus,
+      //   score_subway,
+      //   score_bike,
+      // });
+    });
     return () => map.remove();
   }, [handleModal]);
 
