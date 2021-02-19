@@ -1,5 +1,6 @@
 import Map from './Map';
 import Modal from './Modal';
+import Legend from './Legend';
 import { useState, useCallback } from 'react';
 
 import '../css/App.css';
@@ -15,6 +16,7 @@ function App() {
     <main className="dashboard">
       {modal && <Modal handleModal={modalOnOff} />}
       <Map handleModal={modalOnOff} />
+      <Legend />
     </main>
   );
 }

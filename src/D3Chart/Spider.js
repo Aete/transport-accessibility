@@ -21,10 +21,12 @@ export default function Spider(
 
   const svg = element
     .append('svg')
+    .attr('class', 'webChart')
     .attr('viewBox', viewbox)
     .attr('preserveAspectRatio', 'xMinYMid meet');
 
-  const newFontSize = 12 * (290 / parseInt(d3.select('svg').style('width')));
+  const chartWidth = parseInt(d3.select('.webChart').style('width'));
+  const newFontSize = 12 * (290 / chartWidth);
 
   const container = svg
     .append('g')

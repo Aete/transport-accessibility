@@ -1,0 +1,8 @@
+.Legend {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background-color: rgba(21, 21, 21, 0.9);
+  width: 200px;
+  height: 50px;
+}
