@@ -42,7 +42,8 @@ export default function ColorBar(element) {
     .append('rect')
     .attr('width', width)
     .attr('height', 10)
-    .attr('fill', 'url(#myGradient)');
+    .attr('fill', 'url(#myGradient)')
+    .style('opacity', 0.7);
 
   const xAxis = container.append('g').attr('transform', `translate(0,${13})`);
 
