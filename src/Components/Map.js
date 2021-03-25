@@ -21,12 +21,14 @@ function Map({ handleModal }) {
         return [index, color];
       })
       .flat(1);
+
     const map = new mapboxgl.Map({
       container: mapContainerRef.current,
       style: 'mapbox://styles/sghan/ck1ljdcmy16fc1cpg0f4qh3wu',
       center: [127.06243582034075, 37.49804469532547],
       zoom: 12.7,
       attributionControl: false,
+      antialias: true,
     });
 
     map.addControl(

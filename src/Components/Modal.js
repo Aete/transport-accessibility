@@ -11,7 +11,7 @@ export default function Modal({ handleModal }) {
       </header>
       <main>
         <p className="author">
-          2021. 12 ~ present, Seunggyun Han & Woowon Chung
+          2020. 12 ~ present, Seunggyun Han & Woowon Chung
         </p>
         <p>
           <strong>In Seoul</strong>, where personal car ownership is low and

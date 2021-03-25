@@ -13,8 +13,6 @@ export default function ColorBar(element) {
     return [index, color];
   });
 
-  console.log(colors);
-
   const width = 200 - margin.left - margin.right;
   const height = 50 - margin.top - margin.bottom;
   const svg = d3
@@ -34,16 +32,9 @@ export default function ColorBar(element) {
     .attr('offset', (d) => ((d[0] - 0) / 10) * 100 + '%')
     .attr('stop-color', (d) => d[1]);
 
-  const container = svg
-    .append('g')
-    .attr('transform', `translate(${margin.left}, ${margin.top})`);
+  const container = svg.append('g').attr('transform', `translate(${margin.left}, ${margin.top})`);
 
-  container
-    .append('rect')
-    .attr('width', width)
-    .attr('height', 10)
-    .attr('fill', 'url(#myGradient)')
-    .style('opacity', 0.7);
+  container.append('rect').attr('width', width).attr('height', 10).attr('fill', 'url(#myGradient)').style('opacity', 0.7);
 
   const xAxis = container.append('g').attr('transform', `translate(0,${13})`);
 
